@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 const result = dotenv.config();
 import Maker from '@makerdao/dai';
-import  McdPlugin from '@makerdao/dai-plugin-mcd';
+import { McdPlugin }  from '@makerdao/dai-plugin-mcd';
 
 /* var provider = new Web3.providers.HttpProvider(process.env.GANACHE);
 web3 = new Web3(provider); */
@@ -13,9 +13,9 @@ const maker = async () => {
     url: process.env.GANACHE,
     privateKey:process.env.PRIVATEKEY
   });
-
-}
+  
 console.log('wtf');
   // verify that the private key was read correctly
 console.log(maker.currentAddress());
+}
 
