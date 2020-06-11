@@ -1,21 +1,37 @@
 //CONNECT
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 const result = dotenv.config();
-import Maker from '@makerdao/dai';
-import  McdPlugin from '@makerdao/dai-plugin-mcd';
+const Web3 = require('web3');
+const DSA = require('dsa-sdk');
+const web3 = new Web3(new Web3.providers.HttpProvider(process.env.GANACHE));
 
-/* var provider = new Web3.providers.HttpProvider(process.env.GANACHE);
-web3 = new Web3(provider); */
+const dsa = new DSA({
+  web3: web3,
+  mode: "node",
+  privateKey: process.env.PRIVATE_KEY
+});
 
-const maker = async () => {
-    await Maker.create('http', {
-    plugins: [McdPlugin],
-    url: process.env.GANACHE,
-    privateKey:process.env.PRIVATEKEY
-  });
-
+const account = async () => {
+var buildParams = {
+  gasPrice: '20000000000'
 }
-console.log('wtf');
-  // verify that the private key was read correctly
-console.log(maker.currentAddress());
+try {
+  console.log('DSA creation TxHash: ', await dsa.build(buildParams));
+  var dsaId = await dsa.getAccounts(process.env.ACCOUNT_ADDRESS);
+
+  await dsa.setInstance(dsaId);
+} catch (error) {
+  console.log(error);
+}
+
+console.log('dsaId: ', dsaId[0]['id']);
+console.log ('DSA Accounts from ', process.env.ACCOUNT_ADDRESS, dsaId);
+
+
+
+  
+}
+
+account();
+
 
