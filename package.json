@@ -1,0 +1,18 @@
+{
+  "name": "mint-dai",
+  "version": "1.0.0",
+  "description": "script to mint dai from ganache accounts",
+  "main": "mint.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --experimental-modules mint.js"
+  },
+  "author": "miguel cabeza",
+  "license": "ISC",
+  "dependencies": {
+    "@makerdao/dai": "^0.31.5",
+    "@makerdao/dai-plugin-mcd": "^1.5.7",
+    "dotenv": "^8.2.0"
+  }
+}
