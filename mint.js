@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const result = dotenv.config();
 const Web3 = require('web3');
 const DSA = require('dsa-sdk');
+const ansi = require('ansicolor').nice;
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.GANACHE));
 
 const dsa = new DSA({
@@ -19,7 +20,7 @@ var buildParams = {
   origin: process.env.ACCOUNT_ADDRESS
 }
 try {
-  console.log('DSA creation TxHash: ', await dsa.build(buildParams));
+  console.log('DSA creation TxHash: '.blue, await dsa.build(buildParams));
 
   dsaId =  await dsa.getAccounts(process.env.ACCOUNT_ADDRESS);
 
@@ -30,8 +31,8 @@ try {
 
 
 
-console.log('dsaId: ', dsaId[0]['id']);
-console.log ('DSA Accounts from ', process.env.ACCOUNT_ADDRESS, dsaId);
+console.log('dsaId: '.blue, dsaId[0]['id']);
+console.log ('DSA Accounts from '.blue, process.env.ACCOUNT_ADDRESS, dsaId);
 
 
 minter();
@@ -48,7 +49,7 @@ openVault.add({
 });
 //openVault by casting the spell
 try {
- console.log('opening vault TxHash: ', await dsa.cast({
+ console.log('opening vault TxHash: '.blue, await dsa.cast({
     spells: openVault,
     gasPrice: gasPrice
   }));
@@ -59,15 +60,15 @@ try {
 //fetching Vault details.
 try {
   let vaults = await dsa.maker.getVaults(dsaId[0]['address']);
-  console.log('Maker vaults:', vaults);
-  console.log('Maker vault Ids',Object.keys(vaults).length, Object.keys(vaults));
+  console.log('Maker vaults:'.blue, vaults);
+  console.log('Maker vault Ids'.blue,Object.keys(vaults).length, Object.keys(vaults));
   vaultIds = Object.keys(vaults);
 } catch (error) {
   console.log(error);
 }
 
 //send ETH to vault account owner from my account
-console.log('Transfer 50 Eth from my account to Vault owner account txHash: ', await dsa.transfer({
+console.log('Transfer 50 Eth from my account to Vault owner account txHash: '.blue, await dsa.transfer({
   token: "eth", // the token key to transfer
   amount: dsa.tokens.fromDecimal(5, "eth"), // this helper changes the amount to decimal value
   to: dsaId[0]['address'], // DSA address, which then becomes the vault owner when vauls is created by DSA
@@ -78,7 +79,7 @@ console.log('Transfer 50 Eth from my account to Vault owner account txHash: ', a
 //define spell to deposit Eth and borrow DAI
 let borrowDAI = dsa.Spell();
 let vaultId = vaultIds[0];
-console.log("Vault ID to use for minting", vaultId);
+console.log("Vault ID to use for minting".blue, vaultId);
 borrowDAI.add({
   connector: "maker",
   method: "deposit",
