@@ -12,9 +12,10 @@ const dsa = new DSA({
 });
 var dsaId = 0;
 var vaultIds = 0;
+var gasPrice = '20000000000';
 const account = async () => {
 var buildParams = {
-  gasPrice: '20000000000',
+  gasPrice: gasPrice,
   origin: process.env.ACCOUNT_ADDRESS
 }
 try {
@@ -49,7 +50,7 @@ openVault.add({
 try {
  console.log('opening vault TxHash: ', await dsa.cast({
     spells: openVault,
-    gasPrice: '20000000000'
+    gasPrice: gasPrice
   }));
 } catch (error) {
   console.log(error);
@@ -65,6 +66,14 @@ try {
   console.log(error);
 }
 
+//send ETH to vault account owner from my account
+console.log('Transfer 50 Eth from my account to Vault owner account txHash: ', await dsa.transfer({
+  token: "eth", // the token key to transfer
+  amount: dsa.tokens.fromDecimal(5, "eth"), // this helper changes the amount to decimal value
+  to: dsaId[0]['address'], // DSA address, which then becomes the vault owner when vauls is created by DSA
+  from: process.env.ACCOUNT_ADDRESS, // my account with 100 eth as in ganache
+  gasPrice: gasPrice // estimate gas price*
+}));
 
 //define spell to deposit Eth and borrow DAI
 let borrowDAI = dsa.Spell();
@@ -73,18 +82,18 @@ console.log("Vault ID to use for minting", vaultId);
 borrowDAI.add({
   connector: "maker",
   method: "deposit",
-  args: [vaultId[0], dsa.tokens.fromDecimal(50,"ETH"), 0, 0] // deposit 50 ETH
+  args: [vaultId[0], dsa.tokens.fromDecimal(50,'ETH'), 0, 0] // deposit 50 ETH
 });
-borrowDAI.add({
+/* borrowDAI.add({
   connector: "maker",
   method: "borrow",
   args: [vaultId[0], dsa.tokens.fromDecimal(3000,"DAI"), 0, 0]
-});
+}); */
 //Deopist Eth and get DAI
 try {
   console.log('opening vault TxHash: ', await dsa.cast({
      spells: borrowDAI,
-     gasPrice: '20000000000'
+     gasPrice: gasPrice
    }));
  } catch (error) {
    console.log(error);
