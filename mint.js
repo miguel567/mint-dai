@@ -4,6 +4,7 @@ const result = dotenv.config();
 const Web3 = require('web3');
 const DSA = require('dsa-sdk');
 const ansi = require('ansicolor').nice;
+const transfer = require('./transfer');
 const web3 = new Web3(new Web3.providers.HttpProvider(process.env.GANACHE));
 
 const dsa = new DSA({
@@ -68,22 +69,23 @@ try {
 }
 
 //send ETH to vault account owner from my account
-console.log('Transfer 50 Eth from my account to Vault owner account txHash: '.blue, await dsa.transfer({
+/* console.log('Transfer 50 Eth from my account to Vault owner account txHash: '.blue, await dsa.transfer({
   token: "eth", // the token key to transfer
   amount: dsa.tokens.fromDecimal(5, "eth"), // this helper changes the amount to decimal value
   to: dsaId[0]['address'], // DSA address, which then becomes the vault owner when vauls is created by DSA
   from: process.env.ACCOUNT_ADDRESS, // my account with 100 eth as in ganache
   gasPrice: gasPrice // estimate gas price*
-}));
+})); */
+await transfer(process.env.ACCOUNT_ADDRESS,dsaId[0]['address'],'5');
 
 //define spell to deposit Eth and borrow DAI
 let borrowDAI = dsa.Spell();
 let vaultId = vaultIds[0];
-console.log("Vault ID to use for minting".blue, vaultId);
+console.log("Vault ID to use for minting".blue, vaultId, dsa.tokens.fromDecimal(3,'ETH'));
 borrowDAI.add({
   connector: "maker",
   method: "deposit",
-  args: [vaultId[0], dsa.tokens.fromDecimal(50,'ETH'), 0, 0] // deposit 50 ETH
+  args: [vaultId[0], 2, 0, 0] // deposit 50 ETH
 });
 /* borrowDAI.add({
   connector: "maker",

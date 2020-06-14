@@ -25,14 +25,14 @@ const web3 = new Web3( new Web3.providers.HttpProvider(testnet) )
 /**
  * Set the web3 default account to use as your public wallet address
  */
-web3.eth.defaultAccount = process.env.ACCOUNT_ADDRESS
+/* web3.eth.defaultAccount = process.env.ACCOUNT_ADDRESS */
  
  
 /**
  * The amount of ETH you want to send in this transaction
  * @type {Number}
  */
-const amountToSend = '5'
+/* const amountToSend = '5' */
  
  
 /**
@@ -63,12 +63,12 @@ const getCurrentGasPrices = async () => {
 /**
  * This is the process that will run when you execute the program.
  */
-const main = async () => {
+const transfer = async (from,to,amount) => {
  
   /**
    * Fetch your personal wallet's balance
    */
-  let myBalanceWei = await web3.eth.getBalance(web3.eth.defaultAccount)
+  let myBalanceWei = await web3.eth.getBalance(from)
   let myBalance = web3.utils.fromWei(myBalanceWei, 'ether')
  
   log(`Your wallet balance is currently ${myBalance} ETH`.green)
@@ -78,7 +78,7 @@ const main = async () => {
    * With every new transaction you send using a specific wallet address,
    * you need to increase a nonce which is tied to the sender wallet.
    */
-  let nonce = await web3.eth.getTransactionCount(web3.eth.defaultAccount)
+  let nonce = await web3.eth.getTransactionCount(from)
   log(`The outgoing transaction count for your wallet address is: ${nonce}`.magenta)
  
  
@@ -92,8 +92,8 @@ const main = async () => {
    * Build a new transaction object and sign it locally.
    */
   let details = {
-    "to": process.env.DESTINATION_WALLET_ADDRESS,
-    "value": web3.utils.toHex( web3.utils.toWei(amountToSend, 'ether') ),
+    "to": to,
+    "value": web3.utils.toHex( web3.utils.toWei(amount, 'ether') ),
     "gas":210000,
     "gasPrice": web3.utils.toHex(gasPrices.low * 1000000000), // converts the gwei price to wei
     "nonce": nonce,
@@ -126,6 +126,11 @@ const main = async () => {
    * We're ready! Submit the raw transaction details to the provider configured above.
    */
   const transactionId = await web3.eth.sendSignedTransaction('0x' + serializedTransaction.toString('hex') )
+
+
+ 
+  log(`Your wallet balance is currently ${web3.utils.fromWei(await web3.eth.getBalance(from), 'ether')} ETH and to balance is ${web3.utils.fromWei(await web3.eth.getBalance(to), 'ether')} ETH`.green)
+ 
  
   /**
    * We now know the transaction ID, so let's build the public Etherscan url where
@@ -136,7 +141,6 @@ const main = async () => {
  
   log(`Note: please allow for 30 seconds before transaction appears on Etherscan`.magenta) */
  
-  process.exit()
 }
  
-main()
+module.exports = transfer
