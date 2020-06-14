@@ -87,6 +87,8 @@ borrowDAI.add({
   method: "deposit",
   args: [vaultId[0], 2, 0, 0] // deposit 50 ETH
 });
+
+
 /* borrowDAI.add({
   connector: "maker",
   method: "borrow",
@@ -94,13 +96,24 @@ borrowDAI.add({
 }); */
 //Deopist Eth and get DAI
 try {
-  console.log('opening vault TxHash: ', await dsa.cast({
+  console.log('opening vault TxHash: '.blue, await dsa.cast({
      spells: borrowDAI,
      gasPrice: gasPrice
    }));
  } catch (error) {
    console.log(error);
  }
+
+
+ //check vault balance after  deposit.
+ try {
+  let vaults = await dsa.maker.getVaults(dsaId[0]['address']);
+  console.log('Maker vaults:'.blue, vaults);
+  console.log('Maker vault Ids'.blue,Object.keys(vaults).length, Object.keys(vaults));
+  vaultIds = Object.keys(vaults);
+} catch (error) {
+  console.log(error);
+}
 
 }
 account();
