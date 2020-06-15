@@ -18,6 +18,8 @@ const web3 = new Web3( new Web3.providers.HttpProvider(testnet) )
 let tokenAddress = process.env.DAI_ADDRESS;
 let fromAddress = process.argv[2];
 let toAddress = process.argv[3];
+let amnt = process.argv[4];
+
 /* console.log('To Address: '.blue, toAddress); */
 
 // The minimum ABI to get ERC20 Token balance
@@ -97,7 +99,7 @@ const transferDai = async () => {
     await getBalance();
     // Use BigNumber
     let decimals = web3.utils.toBN(18);
-    let amount = web3.utils.toBN(5);
+    let amount = web3.utils.toBN(amnt);
     // calculate ERC20 token amount
     let value = amount*(10**decimals);
     console.log('Value: '.blue, value);
