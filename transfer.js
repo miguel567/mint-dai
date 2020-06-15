@@ -143,4 +143,4 @@ const transfer = async (from,to,amount) => {
  
 }
  
-module.exports = transfer
+module.exports = {transfer, getCurrentGasPrices}

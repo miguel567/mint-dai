@@ -4,6 +4,16 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "TransferDai",
+            "program": "${workspaceFolder}\\transferDai.js 0x9eb7f2591ed42dee9315b6e2aaf21ba85ea69f8c 0x8A5c08c21c31B690a9Ec92E17Cd4fe7331e46F59",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
         {
             "type": "node",
             "request": "launch",

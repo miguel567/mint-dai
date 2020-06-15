@@ -81,11 +81,11 @@ await transfer(process.env.ACCOUNT_ADDRESS,dsaId[0]['address'],'5');
 //define spell to deposit Eth and borrow DAI
 let borrowDAI = dsa.Spell();
 let vaultId = vaultIds[0];
-console.log("Vault ID to use for minting".blue, vaultId, dsa.tokens.fromDecimal(3,'ETH'));
+console.log("Vault ID to use for minting".blue, vaultId, dsa.tokens.fromDecimal(3,'eth'));
 borrowDAI.add({
   connector: "maker",
   method: "deposit",
-  args: [vaultId[0], 2, 0, 0] // deposit 50 ETH
+  args: [vaultId[0], dsa.tokens.fromDecimal(3.0,'eth'), 0, 0] // deposit 50 ETH
 });
 
 
