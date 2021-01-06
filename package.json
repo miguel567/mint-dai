@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "ansicolor": "^1.1.93",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "dsa-sdk": "^1.3.21",
     "ethereumjs-tx": "^2.1.2",
